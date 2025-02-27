@@ -1,0 +1,38 @@
+{
+  "name": "my-slate-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@udecode/cn": "^44.0.1",
+    "@udecode/plate": "^45.0.9",
+    "@udecode/plate-basic-marks": "^45.0.0",
+    "@udecode/plate-block-quote": "^44.0.0",
+    "@udecode/plate-heading": "^44.0.0",
+    "my-slate-app": "file:",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "slate": "^0.112.0",
+    "slate-react": "^0.112.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.2.0"
+  }
+}
