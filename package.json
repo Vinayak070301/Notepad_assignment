@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server.js"
   },
   "dependencies": {
     "@udecode/cn": "^44.0.1",
@@ -15,9 +16,12 @@
     "@udecode/plate-basic-marks": "^45.0.0",
     "@udecode/plate-block-quote": "^44.0.0",
     "@udecode/plate-heading": "^44.0.0",
+    "cors": "^2.8.5",
     "docx": "^9.2.0",
+    "express": "^4.21.2",
     "file-saver": "^2.0.5",
     "my-slate-app": "file:",
+    "node-fetch": "^3.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "slate": "^0.112.0",
@@ -36,5 +40,17 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "vite": "^6.2.0"
-  }
+  },
+  "description": "<<<<<<< HEAD\r # Notepad_assignment\r =======\r # React + Vite",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vinayak070301/Notepad_assignment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vinayak070301/Notepad_assignment/issues"
+  },
+  "homepage": "https://github.com/Vinayak070301/Notepad_assignment#readme"
 }

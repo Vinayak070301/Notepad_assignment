@@ -1,54 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createEditor, Editor } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { saveAs } from "file-saver";
 import { Document, Packer, Paragraph, TextRun } from "docx";
 
-// Initial content
-const initialValue = [
-  {
-    type: "paragraph",
-    children: [{ text: "Hello World" }],
-  },
-];
-
-// Function to toggle a mark (Bold, Italic, Underline)
-const toggleMark = (editor, format) => {
-  const isActive = isMarkActive(editor, format);
-  if (isActive) {
-    Editor.removeMark(editor, format);
-  } else {
-    Editor.addMark(editor, format, true);
-  }
-};
-
-// Function to check if a mark is active
-const isMarkActive = (editor, format) => {
-  const marks = Editor.marks(editor);
-  return marks ? marks[format] === true : false;
-};
-
-// Function to save content as DOCX
-const saveAsDocx = (editor) => {
-  const content = editor.children.map((node) => {
-    const textRuns = node.children.map((child) => {
-      let run = new TextRun(child.text);
-      if (child.bold) run = run.bold();
-      if (child.italic) run = run.italics();
-      if (child.underline) run = run.underline();
-      return run;
-    });
-    return new Paragraph({ children: textRuns });
-  });
-
-  const doc = new Document({ sections: [{ properties: {}, children: content }] });
-
-  Packer.toBlob(doc).then((blob) => {
-    saveAs(blob, "document.docx");
-  });
-};
-
-// Toolbar component with buttons for text formatting
+// Toolbar component
 const Toolbar = ({ editor }) => (
   <div className="flex gap-3 p-2 border-b border-gray-300 bg-gray-200 rounded-t-lg">
     <button
@@ -87,11 +43,71 @@ const Toolbar = ({ editor }) => (
   </div>
 );
 
-// Main editor component
+// Function to toggle text formatting
+const toggleMark = (editor, format) => {
+  const isActive = isMarkActive(editor, format);
+  if (isActive) {
+    Editor.removeMark(editor, format);
+  } else {
+    Editor.addMark(editor, format, true);
+  }
+};
+
+const isMarkActive = (editor, format) => {
+  const marks = Editor.marks(editor);
+  return marks ? marks[format] === true : false;
+};
+
+// Save content as DOCX
+const saveAsDocx = async (editor) => {
+  const { Document, Packer, Paragraph, TextRun } = await import("docx");
+
+  const content = editor.children.map((node) => {
+    const textRuns = node.children.map((child) => {
+      let run = new TextRun(child.text);
+      if (child.bold) run = run.bold();
+      if (child.italic) run = run.italics();
+      if (child.underline) run = run.underline();
+      return run;
+    });
+    return new Paragraph({ children: textRuns });
+  });
+
+  const doc = new Document({ sections: [{ properties: {}, children: content }] });
+
+  Packer.toBlob(doc).then((blob) => {
+    saveAs(blob, "document.docx");
+  });
+};
+
+// Main Editor Component
 const BasicEditor = () => {
   const [editor] = useState(() => withReact(createEditor()));
+  const [initialValue, setInitialValue] = useState([
+    { type: "paragraph", children: [{ text: "Loading content..." }] },
+  ]);
 
-  // Function to render the text with applied styles
+  useEffect(() => {
+    const fetchText = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/text");
+        const text = await response.text();
+        const extractedText = text.replace(/<\/?p>/g, ""); // Remove <p> tags
+  
+        // Update the editor state dynamically
+        Editor.withoutNormalizing(editor, () => {
+          editor.children = [{ type: "paragraph", children: [{ text: extractedText }] }];
+          editor.onChange();
+        });
+  
+      } catch (error) {
+        console.error("Error fetching text:", error);
+      }
+    };
+    fetchText();
+  }, [editor]); // Dependency array includes editor
+  
+
   const renderLeaf = useCallback(({ attributes, children, leaf }) => {
     if (leaf.bold) {
       children = <strong>{children}</strong>;
