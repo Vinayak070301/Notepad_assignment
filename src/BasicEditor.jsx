@@ -84,7 +84,7 @@ const saveAsDocx = async (editor) => {
 const BasicEditor = () => {
   const [editor] = useState(() => withReact(createEditor()));
   const [initialValue, setInitialValue] = useState([
-    { type: "paragraph", children: [{ text: "Loading content..." }] },
+    { type: "paragraph", children: [{ text: "Loading content... (before running the react server we should run the server.js in seperate terminal )" }] },
   ]);
 
   useEffect(() => {
